@@ -17,4 +17,4 @@ Python, Flask, SQLAlchemy, MySQL (local) / PostgreSQL (online), Jinja2, Gemini A
 4. python app.py, then open http://127.0.0.1:5000
 
 ## Author
-[Riyaz Ansari], [B.Tech CSE], [DR.KNMIET]
+Riyaz Ansari, B.Tech CSE, DR.KNMIET
