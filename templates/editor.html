@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ 'Edit Resume' if r else 'New Resume' }}</h2>
+<form method="POST">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+  <label>Resume title</label>
+  <input name="title" value="{{ r.title if r else '' }}" placeholder="e.g. Software Intern Resume">
+
+  <label>Template</label>
+  <select name="template">
+    {% for t in ['classic', 'modern', 'compact'] %}
+      <option value="{{ t }}" {{ 'selected' if r and r.template == t }}>{{ t|title }}</option>
+    {% endfor %}
+  </select>
+
+  <label>Full name</label>
+  <input name="name" required value="{{ r.name if r else current_user.name }}">
+  <label>Email</label>
+  <input name="email" type="email" value="{{ r.email if r else current_user.email }}">
+  <label>Phone</label>
+  <input name="phone" value="{{ r.phone if r else '' }}">
+  <label>Links (LinkedIn / GitHub)</label>
+  <input name="links" value="{{ r.links if r else '' }}">
+
+  <label>Education</label>
+  <textarea name="education" placeholder="B.Tech CSE, College name, 2023-2027, CGPA">{{ r.education if r else '' }}</textarea>
+  <label>Skills</label>
+  <textarea name="skills" placeholder="Python, Flask, SQL, HTML, CSS...">{{ r.skills if r else '' }}</textarea>
+  <label>Experience / Internship</label>
+  <textarea name="experience">{{ r.experience if r else '' }}</textarea>
+  <label>Projects</label>
+  <textarea name="projects">{{ r.projects if r else '' }}</textarea>
+  <label>Summary (leave empty, AI can write it later)</label>
+  <textarea name="summary">{{ r.summary if r else '' }}</textarea>
+
+  <button>Save Resume</button>
+</form>
+{% endblock %}

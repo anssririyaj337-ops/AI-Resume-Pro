@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>AI Insights: {{ r.title }}</h2>
+<p><a href="{{ url_for('view_resume', rid=r.id) }}">← Back to resume</a></p>
+
+<form method="POST">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Paste the job description</label>
+  <textarea name="jd" style="height:160px" placeholder="Paste the company's job post here..."></textarea>
+  <button formaction="{{ url_for('ai_action', rid=r.id, kind='ats') }}">Check ATS Score</button>
+  <button formaction="{{ url_for('ai_action', rid=r.id, kind='cover') }}">Write Cover Letter</button>
+  <button formaction="{{ url_for('ai_action', rid=r.id, kind='interview') }}">Interview Questions</button>
+</form>
+
+{% if ats %}
+<div class="card">
+  <h3>ATS Match Score: {{ ats.score }}/100</h3>
+  <progress value="{{ ats.score }}" max="100" style="width:100%"></progress>
+  <h4>Matched keywords</h4>
+  {% for k in ats.matched_keywords %}<span class="chip ok">{{ k }}</span>{% endfor %}
+  <h4>Missing keywords</h4>
+  {% for k in ats.missing_keywords %}<span class="chip bad">{{ k }}</span>{% endfor %}
+  <h4>Suggestions</h4>
+  <ul>{% for s in ats.suggestions %}<li>{{ s }}</li>{% endfor %}</ul>
+</div>
+{% endif %}
+
+{% if cover %}<div class="card"><h3>Cover Letter</h3><pre>{{ cover.content }}</pre></div>{% endif %}
+{% if interview %}<div class="card"><h3>Interview Prep</h3><pre>{{ interview.content }}</pre></div>{% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="toolbar no-print">
+  <button onclick="window.print()">Download PDF</button>
+  <a href="{{ url_for('editor', rid=r.id) }}">Edit</a>
+  <a href="{{ url_for('insights', rid=r.id) }}">AI Insights</a>
+  <form method="POST" action="{{ url_for('ai_action', rid=r.id, kind='improve') }}" class="inline">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button>✨ Generate Summary with AI</button>
+  </form>
+</div>
+
+<div class="resume t-{{ r.template }}">
+  <h1>{{ r.name }}</h1>
+  <p class="contact">{{ r.email }}{% if r.phone %} | {{ r.phone }}{% endif %}{% if r.links %} | {{ r.links }}{% endif %}</p>
+  {% if r.summary %}<h3>Summary</h3><p class="txt">{{ r.summary }}</p>{% endif %}
+  {% if r.education %}<h3>Education</h3><p class="txt">{{ r.education }}</p>{% endif %}
+  {% if r.skills %}<h3>Skills</h3><p class="txt">{{ r.skills }}</p>{% endif %}
+  {% if r.experience %}<h3>Experience</h3><p class="txt">{{ r.experience }}</p>{% endif %}
+  {% if r.projects %}<h3>Projects</h3><p class="txt">{{ r.projects }}</p>{% endif %}
+</div>
+{% endblock %}

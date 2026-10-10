@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ 'Create Account' if mode == 'register' else 'Login' }}</h2>
+<form method="POST">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  {% if mode == 'register' %}<input name="name" placeholder="Full name" required>{% endif %}
+  <input name="email" type="email" placeholder="Email" required>
+  <input name="password" type="password" placeholder="Password (min 6 characters)" required minlength="6">
+  <button>{{ 'Register' if mode == 'register' else 'Login' }}</button>
+</form>
+{% endblock %}

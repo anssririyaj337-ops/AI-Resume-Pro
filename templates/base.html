@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Resume Pro</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<nav class="no-print">
+  <a class="brand" href="/">AI Resume Pro</a>
+  {% if current_user.is_authenticated %}
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('editor') }}">+ New Resume</a>
+    <form method="POST" action="{{ url_for('logout') }}" class="inline">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="link">Logout ({{ current_user.name }})</button>
+    </form>
+  {% else %}
+    <a href="{{ url_for('login') }}">Login</a>
+    <a href="{{ url_for('register') }}">Register</a>
+  {% endif %}
+</nav>
+<div class="container">
+  {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% for cat, m in msgs %}<div class="flash {{ cat }} no-print">{{ m }}</div>{% endfor %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>My Resumes</h2>
+{% for r in resumes %}
+<div class="card">
+  <b>{{ r.title }}</b>
+  <small>{{ r.template|title }} · updated {{ r.updated_at.strftime('%d %b %Y') }}</small>
+  <div class="actions">
+    <a href="{{ url_for('view_resume', rid=r.id) }}">View</a>
+    <a href="{{ url_for('editor', rid=r.id) }}">Edit</a>
+    <a href="{{ url_for('insights', rid=r.id) }}">AI Insights</a>
+    <form method="POST" action="{{ url_for('delete_resume', rid=r.id) }}" class="inline"
+          onsubmit="return confirm('Are you sure you want to delete this resume?')">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="danger">Delete</button>
+    </form>
+  </div>
+</div>
+{% else %}
+<p>You don't have any resumes yet. <a href="{{ url_for('editor') }}"> Create your first resume</a></p>
+{% endfor %}
+{% endblock %}
